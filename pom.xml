@@ -25,7 +25,18 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>io.packagecloud.maven.wagon</groupId>
+				<artifactId>maven-packagecloud-wagon</artifactId>
+				<version>0.0.6</version>
+			</extension>
+		</extensions>
 	</build>
+
+
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -46,4 +57,14 @@
 			<version>1.4.7</version>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>packagecloud-Fahim</id>
+			<url>packagecloud+https://packagecloud.io/Fahim/FahimRepo</url>
+		</repository>
+		<snapshotRepository>
+			<id>packagecloud-Fahim</id>
+			<url>packagecloud+https://packagecloud.io/Fahim/FahimRepo</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
