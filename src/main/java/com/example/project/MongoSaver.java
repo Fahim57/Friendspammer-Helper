@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.net.UnknownHostException;
 
 public class MongoSaver {
-
+    static Logger logger = LoggerFactory.getLogger(MongoSaver.class);
     public static boolean saveEmail(String to, String from, String subject, String text, Boolean html) {
         String userName = "YOUR NAME";
         String password = "YOUR PASS";
@@ -33,20 +33,17 @@ public class MongoSaver {
                     .append("asHtml", html);
             c.insertOne(doc);
         } catch (MongoException mongoException) {
-            System.out.println("XXXXXXXXXXXXXXXXXX ERROR WHILE SAVING TO MONGO XXXXXXXXXXXXXXXXXXXXXXXXXX");
+            //System.out.println("XXXXXXXXXXXXXXXXXX ERROR WHILE SAVING TO MONGO XXXXXXXXXXXXXXXXXXXXXXXXXX");
+            logger.info("XXXXXXXXXXXXXXXXXX ERROR WHILE SAVING TO MONGO XXXXXXXXXXXXXXXXXXXXXXXXXX");
             mongoException.printStackTrace();
             success = false;
         }
-
         return success;
 
     }
 
     public static void main(String... args) throws UnknownHostException {
-        // To connect wercker and sonar!
-        Logger logger = LoggerFactory.getLogger(MongoSaver.class);
         logger.info("Hello World");
-        //System.out.println("test");
     }
 
 }

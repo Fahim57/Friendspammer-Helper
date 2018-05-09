@@ -1,5 +1,8 @@
 package com.example.project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -11,7 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
-	
+	static Logger logger = LoggerFactory.getLogger(EmailSender.class);
 	public static void sendEmail(String subject, String to, String messageBody, boolean asHtml) {
 
 		Properties props = new Properties();
@@ -82,8 +85,8 @@ public class EmailSender {
 					message.setText(messageBody);	
 				}
 				Transport.send(message);
-	
-				System.out.println("Done");
+				//System.out.println("Done");
+				logger.info("Done");
 			}
 
 		} catch (MessagingException e) {
