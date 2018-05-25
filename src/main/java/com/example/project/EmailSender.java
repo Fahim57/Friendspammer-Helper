@@ -85,7 +85,6 @@ public class EmailSender {
 					message.setText(messageBody);	
 				}
 				Transport.send(message);
-				//System.out.println("Done");
 				logger.info("Done");
 			}
 

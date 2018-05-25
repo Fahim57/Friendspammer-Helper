@@ -33,7 +33,6 @@ public class MongoSaver {
                     .append("asHtml", html);
             c.insertOne(doc);
         } catch (MongoException mongoException) {
-            //System.out.println("XXXXXXXXXXXXXXXXXX ERROR WHILE SAVING TO MONGO XXXXXXXXXXXXXXXXXXXXXXXXXX");
             logger.info("XXXXXXXXXXXXXXXXXX ERROR WHILE SAVING TO MONGO XXXXXXXXXXXXXXXXXXXXXXXXXX");
             mongoException.printStackTrace();
             success = false;
@@ -42,7 +41,7 @@ public class MongoSaver {
 
     }
 
-    public static void main(String... args) throws UnknownHostException {
+    public static void main(String... args) {
         logger.info("Hello World");
     }
 
