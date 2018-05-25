@@ -89,7 +89,7 @@ public class EmailSender {
 			}
 
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
 	
