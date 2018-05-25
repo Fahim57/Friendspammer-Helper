@@ -13,7 +13,7 @@ build:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
     # https://github.com/wercker/step-maven
-    - java/maven:
+    - wercker/maven:
       goals: install
       cache_repo: true
       version: 3.5.2
@@ -24,7 +24,7 @@ sonar:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
     # https://github.com/wercker/step-maven
-    - java/maven:
+    - wercker/maven:
       goals: clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dmaven.test.failure.ignore=true -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fahim57-github -Dsonar.login=880a57cc0cdb97079fab694a4dfe74c6a5ebe6b4
       cache_repo: true
       version: 3.5.2
