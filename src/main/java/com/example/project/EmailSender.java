@@ -15,7 +15,10 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
 	static Logger logger = LoggerFactory.getLogger(EmailSender.class);
-	public static void sendEmail(String subject, String to, String messageBody, boolean asHtml) {
+	private EmailSender() {
+		throw new IllegalStateException("Utility class");
+	}
+	public static void sendEmail(String subject, String to, String messageBody, boolean asHtml) throws MessagingException {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.mailtrap.io");
@@ -27,6 +30,7 @@ public class EmailSender {
 
 		Session session = Session.getInstance(props,
 				  new javax.mail.Authenticator() {
+					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
 					}
@@ -49,8 +53,9 @@ public class EmailSender {
 			MongoSaver.saveEmail(to, "spammer@spamer.com", subject, messageBody, asHtml);
 
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessagingException(e.getMessage(), e);
 		}
+
 	}
 
 	public static void sendEmail(String subject, String[] toList, String messageBody, boolean asHtml) {
@@ -65,6 +70,7 @@ public class EmailSender {
 
 		Session session = Session.getInstance(props,
 				  new javax.mail.Authenticator() {
+			        @Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
 					}
