@@ -14,89 +14,52 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
-	static Logger logger = LoggerFactory.getLogger(EmailSender.class);
-	private EmailSender() {
-		throw new IllegalStateException("Utility class");
-	}
-	public static void sendEmail(String subject, String to, String messageBody, boolean asHtml) throws MessagingException {
+    static Logger logger = LoggerFactory.getLogger( EmailSender.class );
 
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.mailtrap.io");
-		props.put("mail.smtp.port", "2525");
-		props.put("mail.smtp.auth", "true");
+    private EmailSender() {
+        throw new IllegalStateException( "Utility class" );
+    }
 
-		String username = "YOUR MAIL USERNAME";
-		String password = "YOUR MAIL PASSWORD";
+    public static void sendEmail(String subject, String[] toList, String messageBody, boolean asHtml) {
 
-		Session session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
-					@Override
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				  });
-		try {
+        Properties props = new Properties();
+        props.put( "mail.smtp.host", "smtp.mailtrap.io" );
+        props.put( "mail.smtp.port", "2525" );
+        props.put( "mail.smtp.auth", "true" );
 
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("spammer@spammer.com"));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(to));
-			message.setSubject(subject);
-			
-			if (asHtml) {
-					message.setContent(messageBody, "text/html; charset=utf-8");
-			} else {
-				message.setText(messageBody);	
-			}
-			Transport.send(message);
+        String username = "YOUR MAIL USERNAME";
+        String password = "YOUR MAIL PASSWORD";
 
-			MongoSaver.saveEmail(to, "spammer@spamer.com", subject, messageBody, asHtml);
+        Session session = Session.getInstance( props,
+                new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication( username, password );
+                    }
+                } );
+        try {
 
-		} catch (MessagingException e) {
-			throw new MessagingException(e.getMessage(), e);
-		}
+            for (int index = 0; index < toList.length; index++) {
 
-	}
+                Message message = new MimeMessage( session );
+                message.setFrom( new InternetAddress( "spammer@spammer.com" ) );
+                message.setRecipients( Message.RecipientType.TO,
+                        InternetAddress.parse( toList[index] ) );
+                message.setSubject( subject );
 
-	public static void sendEmail(String subject, String[] toList, String messageBody, boolean asHtml) {
 
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.mailtrap.io");
-		props.put("mail.smtp.port", "2525");
-		props.put("mail.smtp.auth", "true");
-		
-		String username = "YOUR MAIL USERNAME";
-		String password = "YOUR MAIL PASSWORD";
+                if (asHtml) {
+                    message.setContent( messageBody, "text/html; charset=utf-8" );
+                } else {
+                    message.setText( messageBody );
+                }
+                Transport.send( message );
+                logger.info( "Done" );
+            }
 
-		Session session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
-			        @Override
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				  });
-		try {
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 
-			for (int index = 0; index < toList.length; index++) {
-			
-				Message message = new MimeMessage(session);
-				message.setFrom(new InternetAddress("spammer@spammer.com"));
-				message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(toList[index]));
-				message.setSubject(subject);
-				
-				if (asHtml) {
-						message.setContent(messageBody, "text/html; charset=utf-8");
-				} else {
-					message.setText(messageBody);	
-				}
-				Transport.send(message);
-				logger.info("Done");
-			}
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-	}
-	
 }
